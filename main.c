@@ -1,6 +1,7 @@
 #include <malloc.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <sched.h>
 #include <time.h>
@@ -9,19 +10,33 @@
 #define FRAME_SIZE_FILE "./assets/frame_sizes"
 #define FRAME_COUNT 6572
 #define FRAME_BUFFER_SIZE 0xFFFF
-#define DURATION 219.08
+#define DURATION 218
+
+#define VIDEO_START_DELAY_MILLISECONDS 500
 
 int main(int argc, char **argv) {
+
+#ifdef __linux__
+    pid_t pid = fork();
+    assert("Create child process for audio playback." && pid >= 0);
+    if (pid == 0) {
+        execlp(
+            "ffplay", "ffplay", "-v", "0", "-nodisp", "-autoexit", "./assets/audio.mp3", NULL
+        );
+    }
+    
+    usleep(VIDEO_START_DELAY_MILLISECONDS);
+#endif
     
     FILE *f_frameData = fopen(FRAME_DATA_FILE, "r");
     FILE *f_frameSize = fopen(FRAME_SIZE_FILE, "r");
-    assert(f_frameData != NULL && f_frameSize != NULL);
+    assert("Open frame data and size assets." && f_frameData != NULL && f_frameSize != NULL);
     
     int *frameSizes = malloc(sizeof(int) * FRAME_COUNT);
     
     int i = 0;
     char buffer [0xFF], format [0xFF];
-    snprintf(format, sizeof(format), "%%%ds", sizeof(buffer) - 1);
+    snprintf(format, sizeof(format), "%%%ds", (int)sizeof(buffer) - 1);
     for (; fscanf(f_frameSize, format, buffer) && i < FRAME_COUNT; ++i) {
         frameSizes[i] = atoi(buffer);
     }
@@ -48,8 +63,8 @@ int main(int argc, char **argv) {
         }
         int frameSize = frameSizes[currentFrameNum];
         fseek(f_frameData, pos, SEEK_SET);
-        fread(frame, 1, frameSize, f_frameData);
-        frame[frameSize] = '\0';
+        int size = fread(frame, 1, frameSize, f_frameData);
+        frame[size] = '\0';
         printf("\033[H%s", frame);
         fflush(stdout);
     }
