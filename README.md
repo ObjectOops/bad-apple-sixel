@@ -1,7 +1,7 @@
 # bad-apple-sixel
 [Bad Apple!!](https://en.wikipedia.org/wiki/Bad_Apple!!#Use_as_a_graphical_and_audio_test) in high definition on terminals that support the sixel protocol (i.e. in VSCode &amp; Xterm).
 
-<img width="474" alt="image" src="https://github.com/user-attachments/assets/665970df-9f61-48f1-946f-07dbbc72a530">
+![image](https://github.com/user-attachments/assets/0fbb295b-3736-44f9-a497-835e0fd2127f)
 
 [Click here to watch the video.](https://objectoops.github.io/bad-apple-sixel/)
 
