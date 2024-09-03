@@ -14,6 +14,7 @@ ___
 
 ## Requirements
 - A C compiler (GCC, Clang - requires `unistd.h`).
+  - `gcc -O3 main.c -o main`
 - A terminal that supports sixels (i.e. VSCode integrated terminal).
 - FFmpeg (ffplay for audio).
 
