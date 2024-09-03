@@ -10,7 +10,7 @@
 #define FRAME_SIZE_FILE "./assets/frame_sizes"
 #define FRAME_COUNT 6572
 #define FRAME_BUFFER_SIZE 0xFFFF
-#define DURATION 218
+#define DURATION 217
 
 #define VIDEO_START_DELAY_MILLISECONDS 500
 
